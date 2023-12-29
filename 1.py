@@ -2,9 +2,10 @@ import os
 import sys
 import pygame
 
-name = ''
+
+level = ''
 for i in sys.stdin:
-    name = i.strip()
+    level = i
 
 pygame.init()
 pygame.key.set_repeat(200, 70)
@@ -12,7 +13,7 @@ pygame.key.set_repeat(200, 70)
 FPS = 200
 WIDTH = 400
 HEIGHT = 300
-STEP = 10
+STEP = 50
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -133,9 +134,9 @@ class Player(pygame.sprite.Sprite):
 #         self.dy = -(target.rect.y + target.rect.h // 2 - HEIGHT // 2)
 
 
-start_screen()
 
-level_map = load_level(name)
+start_screen()
+level_map = load_level(level.strip())
 player, max_x, max_y = generate_level(level_map)
 # camera = Camera()
 
