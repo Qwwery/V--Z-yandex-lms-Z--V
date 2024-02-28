@@ -2,9 +2,11 @@ import os
 import sys
 import pygame
 
-name = ''
+
+level = '1'
 for i in sys.stdin:
-    name = i.strip()
+    level = i
+
 
 pygame.init()
 pygame.key.set_repeat(200, 70)
@@ -12,7 +14,7 @@ pygame.key.set_repeat(200, 70)
 FPS = 200
 WIDTH = 400
 HEIGHT = 300
-STEP = 10
+STEP = 50
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -41,7 +43,7 @@ def load_image(name, color_key=None):
 
 
 def load_level(filename):
-    filename = "data/" + filename
+    filename = "data/map/" + filename
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
     max_width = max(map(len, level_map))
@@ -116,28 +118,9 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect().move(tile_width * pos_x + 15, tile_height * pos_y + 5)
 
 
-# class Camera:
-#     # зададим начальный сдвиг камеры
-#     def __init__(self):
-#         self.dx = 0
-#         self.dy = 0
-#
-#     # сдвинуть объект obj на смещение камеры
-#     def apply(self, obj):
-#         obj.rect.x += self.dx
-#         obj.rect.y += self.dy
-#
-#     # позиционировать камеру на объекте target
-#     def update(self, target):
-#         self.dx = -(target.rect.x + target.rect.w // 2 - WIDTH // 2)
-#         self.dy = -(target.rect.y + target.rect.h // 2 - HEIGHT // 2)
-
-
 start_screen()
-
-level_map = load_level(name)
+level_map = load_level(level.strip())
 player, max_x, max_y = generate_level(level_map)
-# camera = Camera()
 
 running = True
 
@@ -155,11 +138,6 @@ while running:
                 player.rect.y -= STEP
             if event.key == pygame.K_DOWN:
                 player.rect.y += STEP
-
-    # camera.update(player)
-
-    # for sprite in all_sprites:
-    #     camera.apply(sprite)
 
     screen.fill(pygame.Color(0, 0, 0))
     tiles_group.draw(screen)
